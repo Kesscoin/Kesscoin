@@ -49,6 +49,11 @@ class Block {
     public:
         Block(std::string prev_hash);
         void push_transaction(Transaction transaction);
+        std::string get_hash();
+        std::string get_prev_hash();
+        size_t get_n_transactions();
+        bool is_submitted();
+        size_t get_height();
 };
 
 #endif

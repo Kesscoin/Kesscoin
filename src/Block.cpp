@@ -32,3 +32,22 @@ void Block::push_transaction(Transaction transaction) {
     this->transactions.push_back(transaction);
     this->n_transactions++;
 }
+
+
+std::string Block::get_hash() {
+    return this->hash;
+}
+
+std::string Block::get_prev_hash() {
+    return this->prev_hash;
+}
+
+
+size_t Block::get_n_transactions() {
+    return this->n_transactions;
+}
+
+
+bool Block::is_submitted() {
+    return this->submitted;
+}
