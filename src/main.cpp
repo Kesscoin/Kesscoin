@@ -21,10 +21,16 @@
 
 #include <iostream>
 #include <Block.hpp>
+#include <Transaction.hpp>
+
 
 int main() {
     Block genesis(NULL);
     Block blk1(&genesis);
 
-    std::cout << blk1.get_hash() << "\n";
+    for (int i = 0; i < 55; ++i) {
+        Transaction cur(std::to_string(i), std::to_string(i), 12.99);
+        blk1.push_transaction(cur);
+        std::cout << "BLK1 CURRENT HASH: " << blk1.get_hash() << "\n\n" << "CURRENT TRANSACTION HASH: " << cur.get_hash() << "\n\n";
+    }
 }

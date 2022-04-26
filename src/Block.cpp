@@ -38,18 +38,34 @@ Block::Block(Block* prev) {
         for (int i = 0; i < 64; ++i) {
             this->hash += "0";
         }
-    } else {
-        size_t checksum = 0;
-        checksum += this->block_num;
-        std::string checksumstr = std::to_string(checksum);         // Convert checksum to std::string.
-        picosha2::hash256_hex_string(checksumstr, this->hash);      // Generate hash.
+    } else { 
+        this->update_hash();
     }
+}
+
+
+void Block::update_hash() {
+    std::string header_bin = "";
+    header_bin += std::to_string(this->block_num);
+    header_bin += std::to_string(this->n_transactions);
+    header_bin += std::to_string(this->submitted);
+
+    for (std::vector<Transaction>::iterator i = this->transactions.begin(); i != this->transactions.end(); ++i) {
+        header_bin += i->get_from_id();
+        header_bin += i->get_to_id();
+        header_bin += i->get_hash();
+        header_bin += std::to_string(i->get_amount());
+        header_bin += std::to_string(i->get_timestamp());
+    }
+
+    picosha2::hash256_hex_string(header_bin, this->hash);      // Generate hash.
 }
 
 
 void Block::push_transaction(Transaction transaction) {
     this->transactions.push_back(transaction);
     this->n_transactions++;
+    this->update_hash();
 }
 
 
@@ -73,19 +89,8 @@ const Block* Block::get_prev() {
 }
 
 
-const Block* Block::operator[](unsigned int n) {
-    if (this->right == NULL) return NULL;
-    const Block* cur = this->right;    // Current block.
-
-    if (cur->block_num == n) return cur;   // Return if it is what we requested.
-
-    // Traverse the tree to get the requested block.
-    while (cur !=  NULL) {
-        if (cur->block_num == n) return cur;
-        cur = cur->right;
-    }
-
-    return NULL;    // We did not find the request block.
+Transaction Block::operator[](unsigned int n) {
+    return this->transactions[n];
 }
 
 

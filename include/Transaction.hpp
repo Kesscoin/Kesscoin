@@ -2,17 +2,14 @@
     MIT License
  
     Copyright (c) 2022 Ian Moffett
-
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
     in the Software without restriction, including without limitation the rights
     to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
     copies of the Software, and to permit persons to whom the Software is
     furnished to do so, subject to the following conditions:
-
     The above copyright notice and this permission notice shall be included in all
     copies or substantial portions of the Software.
-
     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
     IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
     FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -22,34 +19,29 @@
     SOFTWARE.
 */
 
-#ifndef BLOCK_HPP
-#define BLOCK_HPP
+#ifndef TRANSACTION_HPP
+#define TRANSACTION_HPP
 
 #include <string>
-#include <vector>
-#include <Transaction.hpp>
+
+typedef double AMOUNT;
 
 
-class Block {
+class Transaction {
     private:
-        std::vector<Transaction> transactions;
+        std::string from_id;
+        std::string to_id;
         std::string hash;
-        size_t block_num;
-        size_t n_transactions;
-        bool submitted;
-        Block* right;
-        Block* left;
-
-        void update_hash();
+        AMOUNT amount;
+        time_t timestamp;
     public:
-        Block(Block* prev);
-        void push_transaction(Transaction transaction);
+        Transaction(std::string from_id, std::string to_id, AMOUNT amount);
         std::string get_hash();
-        size_t get_n_transactions();
-        size_t get_blocknum();
-        bool is_submitted();
-        Transaction operator[](unsigned int n);
-        const Block* get_prev();
+        std::string get_from_id();
+        std::string get_to_id();
+        time_t get_timestamp();
+        AMOUNT get_amount();
 };
+
 
 #endif

@@ -2,17 +2,14 @@
     MIT License
  
     Copyright (c) 2022 Ian Moffett
-
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
     in the Software without restriction, including without limitation the rights
     to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
     copies of the Software, and to permit persons to whom the Software is
     furnished to do so, subject to the following conditions:
-
     The above copyright notice and this permission notice shall be included in all
     copies or substantial portions of the Software.
-
     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
     IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
     FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -22,34 +19,51 @@
     SOFTWARE.
 */
 
-#ifndef BLOCK_HPP
-#define BLOCK_HPP
 
-#include <string>
-#include <vector>
 #include <Transaction.hpp>
+#include <sha.hpp>
 
 
-class Block {
-    private:
-        std::vector<Transaction> transactions;
-        std::string hash;
-        size_t block_num;
-        size_t n_transactions;
-        bool submitted;
-        Block* right;
-        Block* left;
+Transaction::Transaction(std::string from_id, std::string to_id, AMOUNT amount) {
+    this->from_id = from_id;
+    this->to_id = to_id;
+    this->amount = amount;
 
-        void update_hash();
-    public:
-        Block(Block* prev);
-        void push_transaction(Transaction transaction);
-        std::string get_hash();
-        size_t get_n_transactions();
-        size_t get_blocknum();
-        bool is_submitted();
-        Transaction operator[](unsigned int n);
-        const Block* get_prev();
-};
+    std::string header_bin;
 
-#endif
+    // Add up everything to header_bin.
+    for (int i = 0; i < this->from_id.size(); ++i) {
+        header_bin += this->from_id[i];
+    }
+
+    for (int i = 0; i < this->to_id.size(); ++i) {
+        header_bin += this->to_id[i];
+    }
+
+    header_bin += std::to_string(static_cast<int>(this->amount));
+    picosha2::hash256_hex_string(header_bin, this->hash);
+}
+
+
+std::string Transaction::get_hash() {
+    return this->hash;
+}
+
+std::string Transaction::get_from_id() {
+    return this->from_id;
+}
+
+
+std::string Transaction::get_to_id() {
+    return this->to_id;
+}
+
+
+time_t Transaction::get_timestamp() {
+    return this->timestamp;
+}
+
+
+AMOUNT Transaction::get_amount() {
+    return this->amount;
+}
