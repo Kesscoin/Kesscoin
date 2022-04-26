@@ -23,6 +23,5 @@
 #include <Block.hpp>
 
 int main() {
-    static Block genesis(NULL);
-    std::cout << genesis.get_hash() << "\n";
+    Block genesis(NULL);
 }
