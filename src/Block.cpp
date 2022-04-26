@@ -23,7 +23,7 @@
 
 Block::Block(Block* prev) {
     this->block_num = 0;
-    this->submitted = 0;
+    this->submitted = false;
     this->right = NULL;
     prev != NULL ? this->left = prev : this->left = NULL;
 }
