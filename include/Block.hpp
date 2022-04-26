@@ -47,16 +47,13 @@ class Block {
         bool submitted;
         Block* right;
         Block* left;
-
-        size_t get_n_blocks();     // Will count from right to left.
-
     public:
         Block(Block* prev);
         void push_transaction(Transaction transaction);
         std::string get_hash();
         size_t get_n_transactions();
         bool is_submitted();
-        size_t get_height();
+        size_t get_blocknum();
         const Block* operator[](unsigned int n);
         const Block* get_prev();
 };

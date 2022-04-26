@@ -24,4 +24,7 @@
 
 int main() {
     Block genesis(NULL);
+    Block blk1(&genesis);
+
+    std::cout << blk1.get_hash() << "\n";
 }
