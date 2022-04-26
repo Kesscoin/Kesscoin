@@ -42,18 +42,20 @@ class Block {
     private:
         std::vector<Transaction> transactions;
         std::string hash;
-        std::string prev_hash;
-        size_t height;
+        size_t block_num;
         size_t n_transactions;
         bool submitted;
+        Block* right;
+        Block* left;
     public:
-        Block(std::string prev_hash);
+        Block(Block* prev);
         void push_transaction(Transaction transaction);
         std::string get_hash();
-        std::string get_prev_hash();
         size_t get_n_transactions();
         bool is_submitted();
         size_t get_height();
+        const Block* operator[](unsigned int n);
+        const Block* get_prev();
 };
 
 #endif

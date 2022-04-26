@@ -21,10 +21,11 @@
 
 #include <Block.hpp>
 
-Block::Block(std::string prev_hash) {
-    this->height = 0;
+Block::Block(Block* prev) {
+    this->block_num = 0;
     this->submitted = 0;
-    this->prev_hash = prev_hash;
+    this->right = NULL;
+    prev != NULL ? this->left = prev : this->left = NULL;
 }
 
 
@@ -38,10 +39,6 @@ std::string Block::get_hash() {
     return this->hash;
 }
 
-std::string Block::get_prev_hash() {
-    return this->prev_hash;
-}
-
 
 size_t Block::get_n_transactions() {
     return this->n_transactions;
@@ -50,4 +47,25 @@ size_t Block::get_n_transactions() {
 
 bool Block::is_submitted() {
     return this->submitted;
+}
+
+
+const Block* Block::get_prev() {
+    return this->left;
+}
+
+
+const Block* Block::operator[](unsigned int n) {
+    if (this->right == NULL) return NULL;
+    const Block* cur = this->right;    // Current block.
+
+    if (cur->block_num == n) return cur;   // Return if it is what we requested.
+
+    // Traverse the tree to get the requested block.
+    while (cur !=  NULL) {
+        if (cur->block_num == n) return cur;
+        cur = cur->right;
+    }
+
+    return NULL;    // We did not find the request block.
 }
