@@ -20,12 +20,26 @@
 */
 
 #include <Block.hpp>
+#include <sha.hpp>
 
 Block::Block(Block* prev) {
-    this->block_num = 0;
+    this->block_num = this->get_n_blocks();
     this->submitted = false;
     this->right = NULL;
     prev != NULL ? this->left = prev : this->left = NULL;
+
+    if (prev == NULL) {
+        this->hash = "";
+            
+        for (int i = 0; i < 64; ++i) {
+            this->hash += "0";
+        }
+    } else {
+        size_t checksum = 0;
+        checksum += this->block_num + this->n_transactions + this->submitted + sizeof(Block);
+        std::string checksumstr = std::to_string(checksum);         // Convert checksum to std::string.
+        picosha2::hash256_hex_string(checksumstr, this->hash);      // Generate hash.
+    }
 }
 
 
@@ -68,4 +82,18 @@ const Block* Block::operator[](unsigned int n) {
     }
 
     return NULL;    // We did not find the request block.
+}
+
+
+size_t Block::get_n_blocks() {
+    size_t sum = 0;
+
+    Block* cur = this;
+
+    while (cur != NULL) {
+        cur = cur->left;
+        ++sum;
+    }
+
+    return sum;
 }
