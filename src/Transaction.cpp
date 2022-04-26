@@ -59,8 +59,8 @@ std::string Transaction::get_to_id() {
 }
 
 
-time_t Transaction::get_timestamp() {
-    return this->timestamp;
+char* Transaction::get_timestamp() {
+    return ctime(&this->timestamp);
 }
 
 

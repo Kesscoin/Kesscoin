@@ -55,7 +55,7 @@ void Block::update_hash() {
         header_bin += i->get_to_id();
         header_bin += i->get_hash();
         header_bin += std::to_string(i->get_amount());
-        header_bin += std::to_string(i->get_timestamp());
+        header_bin += i->get_timestamp();
     }
 
     picosha2::hash256_hex_string(header_bin, this->hash);      // Generate hash.

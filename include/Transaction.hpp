@@ -39,7 +39,7 @@ class Transaction {
         std::string get_hash();
         std::string get_from_id();
         std::string get_to_id();
-        time_t get_timestamp();
+        char* get_timestamp();
         AMOUNT get_amount();
 };
 
